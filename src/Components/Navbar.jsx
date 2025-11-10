@@ -30,7 +30,7 @@ export default function Navbar() {
         </NavLink>
       </li>
 
-      {user && (
+      {
         <>
           <li>
             <NavLink to="/add-car" className={navLinkStyle}>
@@ -48,7 +48,7 @@ export default function Navbar() {
             </NavLink>
           </li>
         </>
-      )}
+      }
 
       <li>
         <NavLink to="/browse-cars" className={navLinkStyle}>
@@ -86,19 +86,18 @@ export default function Navbar() {
           </ul>
         </div>
 
-        {/* Brand Logo */}
+        
         <Link to="/" className="text-2xl font-extrabold text-gray-800 flex items-center gap-2">
           <span className="text-primary text-3xl">🚗</span>
           Rent<span className="text-primary">Wheels</span>
         </Link>
       </div>
 
-      {/* Center Navigation */}
+     
       <div className="navbar-center hidden lg:flex">
         <ul className="menu menu-horizontal gap-6">{links}</ul>
       </div>
 
-      {/* Right Section */}
       <div className="navbar-end">
         {user ? (
           <div className="relative">

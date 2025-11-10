@@ -3,6 +3,11 @@ import MainLayout from "./Layout/MainLayout";
 import Home from "./Pages/Home";
 import Login from "./Pages/Login";
 import SignUp from "./Pages/SignUp";
+import Addcar from "./Pages/Addcar";
+import ProtectedRoute from "./Components/ProtectedRoute";
+import Mylisting from "./Pages/Mylisting";
+import Mybookings from "./Pages/Mybookings";
+import BrowseCar from "./Pages/BrowseCar";
 
 export const router = createBrowserRouter([
   {
@@ -13,6 +18,22 @@ export const router = createBrowserRouter([
         index: true,
         Component: Home,
       },
+    {
+      path:"add-car",
+      element:<ProtectedRoute><Addcar></Addcar></ProtectedRoute>
+    },
+    {
+      path:"my-listings",
+      element:<ProtectedRoute><Mylisting/></ProtectedRoute>
+    },
+    {
+      path:"my-bookings",
+      element:<ProtectedRoute><Mybookings></Mybookings></ProtectedRoute>
+    },
+    {
+      path:"/browse-cars",
+      element:<BrowseCar></BrowseCar>
+    }
     ],
   },
   {
