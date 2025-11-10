@@ -12,62 +12,74 @@ export default function FeaturedCarSection() {
       {
         id: 1,
         name: "Tesla Model 3",
+        description: "Premium electric sedan with autopilot features.",
+        category: "Electric",
         rentPricePerDay: 120,
-        type: "Electric Sedan",
-        provider: "Tesla Rentals",
+        location: "Dhaka, Bangladesh",
         image:
-          "https://images.unsplash.com/photo-1619767886558-efdc259cde1b?w=300&h=250&fit=crop",
-        detailsLink: "/car-details/1",
+          "https://images.unsplash.com/photo-1567818735868-e71b99932e29?w=300&h=250&fit=crop",
+        providerName: "Elite Car Rentals",
+        providerEmail: "contact@elitecars.com",
       },
       {
         id: 2,
         name: "BMW X5",
+        description: "Luxury SUV perfect for family trips and adventures.",
+        category: "SUV",
         rentPricePerDay: 150,
-        type: "Luxury SUV",
-        provider: "BMW Drive",
+        location: "Chittagong, Bangladesh",
         image:
-          "https://images.unsplash.com/photo-1503736334956-4c8f8e92946d?w=300&h=250&fit=crop",
-        detailsLink: "/car-details/2",
+          "https://images.unsplash.com/photo-1606611281303-38d6bf0f04a9?w=300&h=250&fit=crop",
+        providerName: "Luxury Drives BD",
+        providerEmail: "info@luxurydrives.com",
       },
       {
         id: 3,
         name: "Mercedes-Benz C-Class",
+        description: "Elegant sedan combining style and performance.",
+        category: "Sedan",
         rentPricePerDay: 130,
-        type: "Premium Sedan",
-        provider: "Benz Mobility",
+        location: "Sylhet, Bangladesh",
         image:
-          "https://images.unsplash.com/photo-1563720223185-11003d516935?w=300&h=250&fit=crop",
-        detailsLink: "/car-details/3",
+          "https://images.unsplash.com/photo-1552820728-8ac41f1ce891?w=300&h=250&fit=crop",
+        providerName: "Prime Wheels",
+        providerEmail: "prime@wheels.com",
       },
       {
         id: 4,
         name: "Audi A4",
+        description: "German engineering meets modern luxury.",
+        category: "Sedan",
         rentPricePerDay: 110,
-        type: "Executive Sedan",
-        provider: "Audi Fleet",
+        location: "Khulna, Bangladesh",
         image:
-          "https://images.unsplash.com/photo-1542365887-3655edaa4d4e?w=300&h=250&fit=crop",
-        detailsLink: "/car-details/4",
+          "https://images.unsplash.com/photo-1489824904134-891ab64532f1?w=300&h=250&fit=crop",
+        providerName: "SpeedLine Rentals",
+        providerEmail: "support@speedline.com",
       },
       {
         id: 5,
         name: "Honda Civic",
+        description: "Reliable and fuel-efficient for city driving.",
+        category: "Hatchback",
         rentPricePerDay: 60,
-        type: "Compact Car",
-        provider: "City Rentals",
+        location: "Rajshahi, Bangladesh",
         image:
-          "https://images.unsplash.com/photo-1549921296-3e92f2c9d5c1?w=300&h=250&fit=crop",
-        detailsLink: "/car-details/5",
+          "https://images.unsplash.com/photo-1517457373614-b7152f800fd1?w=300&h=250&fit=crop",
+        providerName: "Smart Car Hub",
+        providerEmail: "service@smartcarhub.com",
       },
       {
         id: 6,
         name: "Porsche 911",
+        description: "High-performance sports car for thrill seekers.",
+        category: "Luxury",
         rentPricePerDay: 280,
-        type: "Sports Coupe",
-        provider: "Elite Drives",
+        location: "Dhaka, Bangladesh",
         image:
-          "https://images.unsplash.com/photo-1603386329225-868f9dcefa86?w=300&h=250&fit=crop",
-        detailsLink: "/car-details/6",
+          "https://images.unsplash.com/photo-1503376780353-7e6692767b70?w=300&h=250&fit=crop",
+        providerName: "Supercar Rentals BD",
+        providerEmail: "hello@supercarbd.com",
       },
     ];
 
@@ -80,7 +92,7 @@ export default function FeaturedCarSection() {
   return (
     <section className="bg-gradient-to-br from-gray-50 via-white to-gray-100 py-20">
       <div className="container mx-auto px-6">
-       
+
         <div className="text-center mb-14">
           <motion.h2
             initial={{ opacity: 0, y: 20 }}
@@ -102,7 +114,7 @@ export default function FeaturedCarSection() {
           </motion.p>
         </div>
 
-        
+     
         <motion.div
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
