@@ -58,7 +58,7 @@ const CarDetails = () => {
     if (result.isConfirmed) {
       setLoading(true);
       try {
-        // Simulate booking
+      
         await new Promise(resolve => setTimeout(resolve, 1500));
         showSuccess('Booking confirmed! Check your email for details.', 'Booking Successful');
         navigate('/my-bookings');
@@ -80,7 +80,7 @@ const CarDetails = () => {
           className="bg-white rounded-lg shadow-xl overflow-hidden"
         >
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 p-8">
-            {/* Left Column - Images and Details */}
+        
             <div className="lg:col-span-2">
               <motion.div
                 initial={{ opacity: 0 }}
@@ -95,7 +95,7 @@ const CarDetails = () => {
                 />
               </motion.div>
 
-              {/* Car Info */}
+           
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -105,7 +105,7 @@ const CarDetails = () => {
                 <p className="text-xl text-primary font-semibold mb-4">{car.category}</p>
                 <p className="text-gray-700 mb-6 text-lg">{car.description}</p>
 
-                {/* Specifications */}
+         
                 <div className="mb-8">
                   <h2 className="text-2xl font-bold text-gray-800 mb-4">Specifications</h2>
                   <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
@@ -126,7 +126,6 @@ const CarDetails = () => {
                   </div>
                 </div>
 
-                {/* Features */}
                 <div className="mb-8">
                   <h2 className="text-2xl font-bold text-gray-800 mb-4">Features</h2>
                   <div className="grid grid-cols-2 gap-3">
@@ -139,7 +138,7 @@ const CarDetails = () => {
                   </div>
                 </div>
 
-                {/* Provider Info */}
+               
                 <div className="bg-blue-50 p-6 rounded-lg">
                   <h3 className="text-xl font-bold text-gray-800 mb-3">Provider Information</h3>
                   <div className="space-y-2">
@@ -151,7 +150,6 @@ const CarDetails = () => {
               </motion.div>
             </div>
 
-            {/* Right Column - Booking Form */}
             <motion.div
               initial={{ opacity: 0, x: 20 }}
               animate={{ opacity: 1, x: 0 }}

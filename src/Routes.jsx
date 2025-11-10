@@ -8,6 +8,7 @@ import ProtectedRoute from "./Components/ProtectedRoute";
 import Mylisting from "./Pages/Mylisting";
 import Mybookings from "./Pages/Mybookings";
 import BrowseCar from "./Pages/BrowseCar";
+import CarDetails from "./Pages/CarDetails";
 
 export const router = createBrowserRouter([
   {
@@ -31,8 +32,12 @@ export const router = createBrowserRouter([
       element:<ProtectedRoute><Mybookings></Mybookings></ProtectedRoute>
     },
     {
-      path:"/browse-cars",
+      path:"browse-cars",
       element:<BrowseCar></BrowseCar>
+    },
+    {
+      path:"car-details/:id",
+      Component:CarDetails
     }
     ],
   },
