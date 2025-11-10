@@ -1,7 +1,9 @@
 import { div } from 'framer-motion/client'
 import React from 'react'
 import { motion, AnimatePresence } from "framer-motion";
+import { useAuth } from '../hooks/useAuth';
 export default function FeaturedCarSection() {
+  const {user}=useAuth();
   return (
     <div>
         <section className="bg-white py-16">
