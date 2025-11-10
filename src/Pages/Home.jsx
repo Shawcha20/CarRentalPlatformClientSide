@@ -4,12 +4,15 @@ import FeaturedCarSection from '../Components/FeaturedCarSection'
 
 export default function Home() {
   return (
-   <div className='min-h-screen'>
+   <div>
     <section>
         <HeroCarousel></HeroCarousel>
     </section>
     <section>
-        {/* <FeaturedCarSection></FeaturedCarSection> */}
+        <FeaturedCarSection></FeaturedCarSection>
+    </section>
+    <section>
+      
     </section>
    </div>
   )

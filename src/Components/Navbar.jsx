@@ -140,7 +140,7 @@ export default function Navbar() {
             )}
           </div>
         ) : (
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-3 max-md:flex-col">
             <Link
               to="/login"
               className="btn btn-ghost btn-sm hover:text-primary font-medium"
