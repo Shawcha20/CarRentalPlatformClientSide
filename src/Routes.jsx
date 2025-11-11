@@ -9,6 +9,7 @@ import Mylisting from "./Pages/Mylisting";
 import Mybookings from "./Pages/Mybookings";
 import BrowseCar from "./Pages/BrowseCar";
 import CarDetails from "./Pages/CarDetails";
+import EditForm from "./Pages/EditForm";
 
 export const router = createBrowserRouter([
   {
@@ -37,7 +38,11 @@ export const router = createBrowserRouter([
     },
     {
       path:"car-details/:id",
-      Component:CarDetails
+      element:<ProtectedRoute><CarDetails></CarDetails></ProtectedRoute>
+    },
+    {
+      path:"/car-edit/:id",
+      element:<ProtectedRoute><EditForm></EditForm></ProtectedRoute>
     }
     ],
   },

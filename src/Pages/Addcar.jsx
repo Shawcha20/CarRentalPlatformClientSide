@@ -1,59 +1,126 @@
-import React, { useState } from 'react';
-import { motion } from 'framer-motion';
-import { useAuth } from '../hooks/useAuth';
-import { showSuccess, showError } from '../utils/notifications';
-import { useNavigate } from 'react-router-dom';
+import React, { useState } from "react";
+import { motion } from "framer-motion";
+import { useAuth } from "../hooks/useAuth";
+import { showSuccess, showError } from "../utils/notifications";
+import { useNavigate } from "react-router-dom";
+import useAxiosSecure from "../hooks/useAxiosSecure";
 
 const AddCar = () => {
   const { user } = useAuth();
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
-  const [imagePreview, setImagePreview] = useState('');
-  
+  const [imagePreview, setImagePreview] = useState("");
+  const axiosSecure = useAxiosSecure();
+
   const [formData, setFormData] = useState({
-    name: '',
-    category: 'Sedan',
+    name: "",
+    category: "Sedan",
     year: new Date().getFullYear(),
-    pricePerDay: '',
-    description: '',
-    imageUrl: '',
-    transmission: 'Automatic',
-    fuel: 'Petrol',
+    pricePerDay: "",
+    description: "",
+    imageUrl: "",
+    transmission: "Automatic",
+    fuel: "Petrol",
     seats: 5,
     doors: 4,
-    mileage: '0 miles'
+    mileage: "0 miles",
+    location: "Dhaka",
   });
 
-  const categories = ['Sedan', 'SUV', 'Sports', 'Compact', 'Electric', 'Luxury'];
-  const transmissions = ['Automatic', 'Manual'];
-  const fuelTypes = ['Petrol', 'Diesel', 'Electric', 'Hybrid'];
+  const categories = ["Sedan", "SUV", "Sports", "Compact", "Electric", "Luxury"];
+  const transmissions = ["Automatic", "Manual"];
+  const fuelTypes = ["Petrol", "Diesel", "Electric", "Hybrid"];
+  const cities = [
+    "Dhaka",
+    "Chittagong",
+    "Sylhet",
+    "Rajshahi",
+    "Khulna",
+    "Barisal",
+    "Rangpur",
+    "Mymensingh",
+    "Comilla",
+    "Gazipur",
+    "Narayanganj",
+    "Cox's Bazar",
+  ];
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
-      [name]: value
+      [name]: value,
     }));
 
-    if (name === 'imageUrl') {
+    if (name === "image_url") {
       setImagePreview(value);
     }
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
-    if (!formData.name || !formData.pricePerDay || !formData.imageUrl) {
-      showError('Please fill in all required fields', 'Incomplete Form');
+    const form = e.target;
+    const [
+      name,
+      email,
+      car_name,
+      category,
+      year,
+      price_per_day,
+      transmission,
+      fuel_type,
+      seats,
+      doors,
+      description,
+      image_url,
+      location,
+      status,
+    ] = [
+      form.name.value,
+      form.email.value,
+      form.car_name.value,
+      form.category.value,
+      form.year.value,
+      form.price_per_day.value,
+      form.transmission.value,
+      form.fuel.value,
+      form.seats.value,
+      form.doors.value,
+      form.description.value,
+      form.image_url.value,
+      form.location.value,
+      "Available",
+    ];
+
+    if (!name || !price_per_day || !image_url || !location) {
+      showError("Please fill in all required fields", "Incomplete Form");
       return;
     }
 
     setLoading(true);
+    const CarDetails = {
+      name,
+      email,
+      car_name,
+      category,
+      year,
+      price_per_day,
+      transmission,
+      fuel_type,
+      seats,
+      doors,
+      description,
+      image_url,
+      location,
+      status,
+    };
+
     try {
-      showSuccess('Car added successfully!', 'Success');
-      navigate('/my-listings');
+      const response = await axiosSecure.post("/add-car", CarDetails);
+      showSuccess("Car added successfully!", "Success");
+      navigate("/my-listings");
     } catch (error) {
-      showError('Failed to add car', 'Error');
+      showError("Failed to add car", "Error");
     } finally {
       setLoading(false);
     }
@@ -72,12 +139,8 @@ const AddCar = () => {
           <p className="text-gray-600 mb-8">List your vehicle on RentWheels</p>
 
           <form onSubmit={handleSubmit} className="space-y-8">
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 0.6, delay: 0.1 }}
-              className="bg-blue-50 p-6 rounded-lg"
-            >
+            {/* Provider info section */}
+            <div className="bg-blue-50 p-6 rounded-lg">
               <h2 className="text-xl font-bold text-gray-800 mb-4">Your Information</h2>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
@@ -87,8 +150,9 @@ const AddCar = () => {
                   <input
                     type="text"
                     value={user.displayName}
-                    disabled
+                    name="name"
                     className="input input-bordered w-full bg-gray-100"
+                    readOnly
                   />
                 </div>
                 <div>
@@ -98,21 +162,18 @@ const AddCar = () => {
                   <input
                     type="email"
                     value={user.email}
-                    disabled
+                    name="email"
                     className="input input-bordered w-full bg-gray-100"
+                    readOnly
                   />
                 </div>
               </div>
-            </motion.div>
+            </div>
 
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 0.6, delay: 0.15 }}
-              className="space-y-4"
-            >
+            {/* Car details section */}
+            <div className="space-y-4">
               <h2 className="text-xl font-bold text-gray-800">Car Details</h2>
-              
+
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
                   <label className="block text-sm font-semibold text-gray-700 mb-2">
@@ -120,8 +181,7 @@ const AddCar = () => {
                   </label>
                   <input
                     type="text"
-                    name="name"
-                    value={formData.name}
+                    name="car_name"
                     onChange={handleChange}
                     placeholder="e.g., Tesla Model 3"
                     className="input input-bordered w-full"
@@ -139,8 +199,30 @@ const AddCar = () => {
                     onChange={handleChange}
                     className="select select-bordered w-full"
                   >
-                    {categories.map(cat => (
-                      <option key={cat} value={cat}>{cat}</option>
+                    {categories.map((cat) => (
+                      <option key={cat} value={cat}>
+                        {cat}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+
+                {/* New location field */}
+                <div>
+                  <label className="block text-sm font-semibold text-gray-700 mb-2">
+                    Location (City) *
+                  </label>
+                  <select
+                    name="location"
+                    value={formData.location}
+                    onChange={handleChange}
+                    className="select select-bordered w-full"
+                    required
+                  >
+                    {cities.map((city) => (
+                      <option key={city} value={city}>
+                        {city}
+                      </option>
                     ))}
                   </select>
                 </div>
@@ -166,8 +248,7 @@ const AddCar = () => {
                   </label>
                   <input
                     type="number"
-                    name="pricePerDay"
-                    value={formData.pricePerDay}
+                    name="price_per_day"
                     onChange={handleChange}
                     placeholder="e.g., 120"
                     min="1"
@@ -182,12 +263,13 @@ const AddCar = () => {
                   </label>
                   <select
                     name="transmission"
-                    value={formData.transmission}
                     onChange={handleChange}
                     className="select select-bordered w-full"
                   >
-                    {transmissions.map(t => (
-                      <option key={t} value={t}>{t}</option>
+                    {transmissions.map((t) => (
+                      <option key={t} value={t}>
+                        {t}
+                      </option>
                     ))}
                   </select>
                 </div>
@@ -198,12 +280,13 @@ const AddCar = () => {
                   </label>
                   <select
                     name="fuel"
-                    value={formData.fuel}
                     onChange={handleChange}
                     className="select select-bordered w-full"
                   >
-                    {fuelTypes.map(f => (
-                      <option key={f} value={f}>{f}</option>
+                    {fuelTypes.map((f) => (
+                      <option key={f} value={f}>
+                        {f}
+                      </option>
                     ))}
                   </select>
                 </div>
@@ -245,30 +328,24 @@ const AddCar = () => {
                 </label>
                 <textarea
                   name="description"
-                  value={formData.description}
                   onChange={handleChange}
                   placeholder="Describe your car's features and condition..."
                   className="textarea textarea-bordered w-full h-24"
                 />
               </div>
-            </motion.div>
+            </div>
 
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 0.6, delay: 0.2 }}
-              className="space-y-4"
-            >
+            {/* Image section remains same */}
+            <div className="space-y-4">
               <h2 className="text-xl font-bold text-gray-800">Car Image</h2>
-              
+
               <div>
                 <label className="block text-sm font-semibold text-gray-700 mb-2">
                   Image URL *
                 </label>
                 <input
                   type="url"
-                  name="imageUrl"
-                  value={formData.imageUrl}
+                  name="image_url"
                   onChange={handleChange}
                   placeholder="https://example.com/car.jpg"
                   className="input input-bordered w-full"
@@ -283,33 +360,28 @@ const AddCar = () => {
                     src={imagePreview}
                     alt="Preview"
                     className="w-full h-64 object-cover rounded-lg"
-                    onError={() => setImagePreview('')}
+                    onError={() => setImagePreview("")}
                   />
                 </div>
               )}
-            </motion.div>
+            </div>
 
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 0.6, delay: 0.25 }}
-              className="flex gap-4"
-            >
+            <div className="flex gap-4">
               <button
                 type="submit"
                 disabled={loading}
                 className="btn btn-primary text-white flex-1 font-bold"
               >
-                {loading ? 'Adding Car...' : 'Add Car to Fleet'}
+                {loading ? "Adding Car..." : "Add Car to Fleet"}
               </button>
               <button
                 type="button"
-                onClick={() => navigate('/my-listings')}
+                onClick={() => navigate("/my-listings")}
                 className="btn btn-ghost flex-1"
               >
                 Cancel
               </button>
-            </motion.div>
+            </div>
           </form>
         </motion.div>
       </div>

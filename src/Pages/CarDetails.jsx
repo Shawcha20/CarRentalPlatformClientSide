@@ -1,60 +1,48 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { useAuth } from '../hooks/useAuth';
 import { showSuccess, showError, showConfirm } from '../utils/notifications';
+import useAxiosSecure from '../hooks/useAxiosSecure';
+import LoadingSpinner from '../Components/LoadingSpinner';
+
 
 const CarDetails = () => {
   const { id } = useParams();
   const navigate = useNavigate();
-  const { user } = useAuth();
-  const [startDate, setStartDate] = useState('');
-  const [endDate, setEndDate] = useState('');
+  const axiosSecure=useAxiosSecure();
   const [loading, setLoading] = useState(false);
-
+  const [car,setCar]=useState(null);
   // Mock car data
-  const car = {
-    id: id,
-    name: 'Tesla Model 3',
-    category: 'Electric',
-    description: 'Premium electric sedan with advanced autopilot features',
-    year: 2024,
-    mileage: '5,000 miles',
-    pricePerDay: 120,
-    status: 'available',
-    image: 'https://images.unsplash.com/photo-1567818735868-e71b99932e29?w=600&h=400&fit=crop',
-    features: ['Autopilot', 'Supercharger Compatible', 'Premium Sound System', 'Glass Roof', 'Advanced Safety', '310 Mile Range'],
-    providerName: 'Premium Motors',
-    providerEmail: 'contact@premiummotors.com',
-    providerPhone: '+1-555-0123',
-    transmission: 'Automatic',
-    fuel: 'Electric',
-    seats: 5,
-    doors: 4,
-    engineCC: 'N/A',
-    condition: 'Excellent'
-  };
+  // const cars = {
+  //   id: id,
+  //   name: 'Tesla Model 33',
+  //   category: 'Electric',
+  //   description: 'Premium electric sedan with advanced autopilot features',
+  //   year: 2024,
+  //   mileage: '5,000 miles',
+  //   pricePerDay: 120,
+  //   status: 'available',
+  //   image: 'https://images.unsplash.com/photo-1567818735868-e71b99932e29?w=600&h=400&fit=crop',
+  //   features: ['Autopilot', 'Supercharger Compatible', 'Premium Sound System', 'Glass Roof', 'Advanced Safety', '310 Mile Range'],
+  //   providerName: 'Premium Motors',
+  //   providerEmail: 'contact@premiummotors.com',
+  //   providerPhone: '+1-555-0123',
+  //   transmission: 'Automatic',
+  //   fuel: 'Electric',
+  //   seats: 5,
+  //   doors: 4,
+  //   engineCC: 'N/A',
+  //   condition: 'Excellent'
+  // };
 
   const handleBooking = async (e) => {
     e.preventDefault();
-
-
-
-    if (!startDate || !endDate) {
-      showError('Please select start and end dates', 'Incomplete Form');
-      return;
-    }
-
-    if (new Date(startDate) >= new Date(endDate)) {
-      showError('End date must be after start date', 'Invalid Dates');
-      return;
-    }
-
-    const result = await showConfirm(
-      `Book ${car.name} from ${startDate} to ${endDate}?\nTotal: $${(new Date(endDate) - new Date(startDate)) / (1000 * 60 * 60 * 24) * car.pricePerDay}`,
-      'Confirm Booking'
-    );
-
+    // const result = await showConfirm(
+    //   `Book ${car.name} from ${startDate} to ${endDate}?\nTotal: $${(new Date(endDate) - new Date(startDate)) / (1000 * 60 * 60 * 24) * car.pricePerDay}`,
+    //   'Confirm Booking'
+    // );
+  const result= await showConfirm(`Book ${car.car_name}  for ${car.price_per_day}`,'Confirm Booking')
     if (result.isConfirmed) {
       setLoading(true);
       try {
@@ -70,6 +58,25 @@ const CarDetails = () => {
     }
   };
 
+useEffect(() => {
+  const getCarDetails = async () => {
+    setLoading(true);
+    try {
+      const response = await axiosSecure.get(`car-details/${id}`);
+      setCar(response.data);
+    } catch (error) {
+      showError('Failed to fetch car details', 'Error');
+    } finally {
+      setLoading(false);
+    }
+  };
+  getCarDetails();
+}, [id]);
+  if (!car) {
+    return (
+     <LoadingSpinner></LoadingSpinner>
+    );
+  }
   return (
     <div className="min-h-screen bg-gray-50 py-12">
       <div className="container mx-auto px-4">
@@ -89,8 +96,8 @@ const CarDetails = () => {
                 className="mb-8"
               >
                 <img
-                  src={car.image}
-                  alt={car.name}
+                  src={car.image_url}
+                  alt={car.car_name}
                   className="w-full h-96 object-cover rounded-lg shadow-md"
                 />
               </motion.div>
@@ -101,7 +108,7 @@ const CarDetails = () => {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: 0.1 }}
               >
-                <h1 className="text-4xl font-bold text-gray-800 mb-2">{car.name}</h1>
+                <h1 className="text-4xl font-bold text-gray-800 mb-2">{car.car_name}</h1>
                 <p className="text-xl text-primary font-semibold mb-4">{car.category}</p>
                 <p className="text-gray-700 mb-6 text-lg">{car.description}</p>
 
@@ -112,11 +119,10 @@ const CarDetails = () => {
                     {[
                       { label: 'Year', value: car.year },
                       { label: 'Transmission', value: car.transmission },
-                      { label: 'Fuel Type', value: car.fuel },
+                      { label: 'Fuel Type', value: car.fuel_type },
                       { label: 'Seats', value: car.seats },
                       { label: 'Doors', value: car.doors },
-                      { label: 'Condition', value: car.condition },
-                      { label: 'Mileage', value: car.mileage }
+                      {label: 'Location', value:car.location}
                     ].map((spec, index) => (
                       <div key={index} className="bg-gray-50 p-4 rounded-lg">
                         <p className="text-sm text-gray-600">{spec.label}</p>
@@ -126,7 +132,7 @@ const CarDetails = () => {
                   </div>
                 </div>
 
-                <div className="mb-8">
+                {/* <div className="mb-8">
                   <h2 className="text-2xl font-bold text-gray-800 mb-4">Features</h2>
                   <div className="grid grid-cols-2 gap-3">
                     {car.features.map((feature, index) => (
@@ -136,15 +142,15 @@ const CarDetails = () => {
                       </div>
                     ))}
                   </div>
-                </div>
+                </div> */}
 
                
                 <div className="bg-blue-50 p-6 rounded-lg">
                   <h3 className="text-xl font-bold text-gray-800 mb-3">Provider Information</h3>
                   <div className="space-y-2">
-                    <p><span className="font-semibold text-gray-700">Provider:</span> {car.providerName}</p>
-                    <p><span className="font-semibold text-gray-700">Email:</span> {car.providerEmail}</p>
-                    <p><span className="font-semibold text-gray-700">Phone:</span> {car.providerPhone}</p>
+                    <p><span className="font-semibold text-gray-700">Provider:</span> {car.name}</p>
+                    <p><span className="font-semibold text-gray-700">Email:</span> {car.email}</p>
+                    {/* <p><span className="font-semibold text-gray-700">Phone:</span> {car.providerPhone}</p> */}
                   </div>
                 </div>
               </motion.div>
@@ -159,62 +165,20 @@ const CarDetails = () => {
               <div className="bg-gray-50 rounded-lg shadow-md p-6 border-2 border-primary">
                 <div className="mb-6">
                   <p className="text-gray-600 text-sm mb-2">Price per day</p>
-                  <p className="text-4xl font-bold text-primary">${car.pricePerDay}</p>
+                  <p className="text-4xl font-bold text-primary">${car.price_per_day}</p>
                 </div>
 
                 <div className="mb-2">
-                  <span className={`badge ${car.status === 'available' ? 'badge-success' : 'badge-warning'} text-white`}>
+                  <span className={`badge ${car.status === 'Available' ? 'badge-success' : 'badge-warning'} text-white`}>
                     {car.status.charAt(0).toUpperCase() + car.status.slice(1)}
                   </span>
                 </div>
 
-                <form onSubmit={handleBooking} className="space-y-4 mt-6">
-                  <div>
-                    <label className="block text-sm font-semibold text-gray-700 mb-2">
-                      Start Date
-                    </label>
-                    <input
-                      type="date"
-                      value={startDate}
-                      onChange={(e) => setStartDate(e.target.value)}
-                      className="input input-bordered w-full"
-                      required
-                    />
-                  </div>
-
-                  <div>
-                    <label className="block text-sm font-semibold text-gray-700 mb-2">
-                      End Date
-                    </label>
-                    <input
-                      type="date"
-                      value={endDate}
-                      onChange={(e) => setEndDate(e.target.value)}
-                      className="input input-bordered w-full"
-                      required
-                    />
-                  </div>
-
-                  {startDate && endDate && (
-                    <div className="bg-blue-50 p-4 rounded-lg">
-                      <p className="text-sm text-gray-600 mb-2">Total Cost</p>
-                      <p className="text-2xl font-bold text-primary">
-                        ${(new Date(endDate) - new Date(startDate)) / (1000 * 60 * 60 * 24) * car.pricePerDay}
-                      </p>
-                      <p className="text-xs text-gray-500 mt-1">
-                        {(new Date(endDate) - new Date(startDate)) / (1000 * 60 * 60 * 24)} day(s)
-                      </p>
-                    </div>
-                  )}
-
-                  <button
-                    type="submit"
-                    disabled={loading || car.status !== 'available'}
-                    className="btn btn-primary w-full text-white font-bold"
-                  >
+               
+                  <button onClick={handleBooking} type="submit" disabled={loading || car.status !== 'Available'} className="btn btn-primary w-full text-white font-bold"  >
                     {loading ? 'Booking...' : 'Book Now'}
                   </button>
-                </form>
+                
 
                 <p className="text-xs text-gray-500 mt-4 text-center">
                   ✓ Free cancellation up to 24 hours before pickup
