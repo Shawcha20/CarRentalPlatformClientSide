@@ -1,7 +1,18 @@
-import React from 'react'
-
+import React, { useEffect } from 'react'
+import { useAuth } from './useAuth'
+import axios from 'axios';
+const instance= axios.create({
+  baseURL:"http://localhost:3000/"
+})
 export default function useAxiosSecure() {
+  const {user}=useAuth();
+  useEffect(()=>{
+    const requestInterceptor= instance.interceptors.request.use(config=>{
+      config.headers.authorization= `Bearer ${user.accessToken}`
+    })
   return (
-    <div>useAxiosSecure</div>
+    instance.interceptors.request.eject(requestInterceptor)
   )
+    },[user]);
+    return instance;
 }
