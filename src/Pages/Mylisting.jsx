@@ -14,7 +14,6 @@ const MyListings = () => {
   const [listings, setListings] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
-  const [editingId, setEditingId] = useState(null);
   const [editFormData, setEditFormData] = useState(null);
 
   useEffect(() => {
@@ -59,23 +58,24 @@ const MyListings = () => {
     }
   };
 
-  const handleDelete = async (id) => {
-    const result = await showConfirm(
-      "Are you sure you want to delete this listing? This action cannot be undone.",
-      "Delete Listing"
-    );
+const handleDelete = async (id) => {
+  const result = await showConfirm(
+    "Are you sure you want to delete this listing? This action cannot be undone.",
+    "Delete Listing"
+  );
 
-    if (result.isConfirmed) {
-      try {
-        const response= axiosSecure.delete(`/mylisting/${id}`)
-        setListings();
-        showSuccess("Listing deleted successfully!", "Success");
-      } catch (error) {
-        console.error(error);
-        showError("Failed to delete listing", "Error");
-      }
+  if (result.isConfirmed) {
+    try {
+      const response=await axiosSecure.delete(`/mylisting/${id}`); 
+      console.log(response);
+      setListings(listings.filter((l) => l._id !== id)); 
+      showSuccess("Listing deleted successfully!", "Success");
+    } catch (error) {
+      console.error(error);
+      showError("Failed to delete listing", "Error");
     }
-  };
+  }
+};
 
   const handleChangeStatus = async (id, currentStatus) => {
     const newStatus = currentStatus === "available" ? "booked" : "available";
