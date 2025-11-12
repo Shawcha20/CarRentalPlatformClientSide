@@ -10,6 +10,7 @@ import Mybookings from "./Pages/Mybookings";
 import BrowseCar from "./Pages/BrowseCar";
 import CarDetails from "./Pages/CarDetails";
 import EditForm from "./Pages/EditForm";
+import ErrorPage from "./Pages/ErrorPage";
 
 export const router = createBrowserRouter([
   {
@@ -45,6 +46,10 @@ export const router = createBrowserRouter([
       element:<ProtectedRoute><EditForm></EditForm></ProtectedRoute>
     }
     ],
+  },
+  {
+    path:"/errorpage",
+    element:<ProtectedRoute><ErrorPage></ErrorPage></ProtectedRoute>
   },
   {
     path: "login",

@@ -4,6 +4,7 @@ import { useAuth } from "../hooks/useAuth";
 import { showSuccess, showError } from "../utils/notifications";
 import { useNavigate } from "react-router-dom";
 import useAxiosSecure from "../hooks/useAxiosSecure";
+import LoadingSpinner from "../Components/LoadingSpinner";
 
 const AddCar = () => {
   const { user } = useAuth();
@@ -125,7 +126,7 @@ const AddCar = () => {
       setLoading(false);
     }
   };
-
+  if(loading)return <LoadingSpinner></LoadingSpinner>
   return (
     <div className="min-h-screen bg-white py-16">
       <div className="container mx-auto px-4 max-w-4xl">
@@ -372,7 +373,7 @@ const AddCar = () => {
                 disabled={loading}
                 className="btn btn-primary text-white flex-1 font-bold"
               >
-                {loading ? "Adding Car..." : "Add Car to Fleet"}
+                {loading ? <LoadingSpinner/>: "Add Car to Fleet"}
               </button>
               <button
                 type="button"

@@ -9,45 +9,22 @@ import LoadingSpinner from '../Components/LoadingSpinner';
 
 const CarDetails = () => {
   const { id } = useParams();
+  const {user}=useAuth();
   const navigate = useNavigate();
   const axiosSecure=useAxiosSecure();
   const [loading, setLoading] = useState(false);
   const [car,setCar]=useState(null);
-  // Mock car data
-  // const cars = {
-  //   id: id,
-  //   name: 'Tesla Model 33',
-  //   category: 'Electric',
-  //   description: 'Premium electric sedan with advanced autopilot features',
-  //   year: 2024,
-  //   mileage: '5,000 miles',
-  //   pricePerDay: 120,
-  //   status: 'available',
-  //   image: 'https://images.unsplash.com/photo-1567818735868-e71b99932e29?w=600&h=400&fit=crop',
-  //   features: ['Autopilot', 'Supercharger Compatible', 'Premium Sound System', 'Glass Roof', 'Advanced Safety', '310 Mile Range'],
-  //   providerName: 'Premium Motors',
-  //   providerEmail: 'contact@premiummotors.com',
-  //   providerPhone: '+1-555-0123',
-  //   transmission: 'Automatic',
-  //   fuel: 'Electric',
-  //   seats: 5,
-  //   doors: 4,
-  //   engineCC: 'N/A',
-  //   condition: 'Excellent'
-  // };
 
   const handleBooking = async (e) => {
     e.preventDefault();
-    // const result = await showConfirm(
-    //   `Book ${car.name} from ${startDate} to ${endDate}?\nTotal: $${(new Date(endDate) - new Date(startDate)) / (1000 * 60 * 60 * 24) * car.pricePerDay}`,
-    //   'Confirm Booking'
-    // );
   const result= await showConfirm(`Book ${car.car_name}  for ${car.price_per_day}`,'Confirm Booking')
     if (result.isConfirmed) {
       setLoading(true);
       try {
-      
-        await new Promise(resolve => setTimeout(resolve, 1500));
+        const booked_by=user.email;
+        const patchData={booked_by}
+        const response= await axiosSecure.patch(`/car-book/${id}`,patchData);
+        console.log(response);
         showSuccess('Booking confirmed! Check your email for details.', 'Booking Successful');
         navigate('/my-bookings');
       } catch (error) {
@@ -122,7 +99,7 @@ useEffect(() => {
                       { label: 'Fuel Type', value: car.fuel_type },
                       { label: 'Seats', value: car.seats },
                       { label: 'Doors', value: car.doors },
-                      {label: 'Location', value:car.location}
+                      {label: 'Location'}
                     ].map((spec, index) => (
                       <div key={index} className="bg-gray-50 p-4 rounded-lg">
                         <p className="text-sm text-gray-600">{spec.label}</p>
@@ -132,17 +109,7 @@ useEffect(() => {
                   </div>
                 </div>
 
-                {/* <div className="mb-8">
-                  <h2 className="text-2xl font-bold text-gray-800 mb-4">Features</h2>
-                  <div className="grid grid-cols-2 gap-3">
-                    {car.features.map((feature, index) => (
-                      <div key={index} className="flex items-center">
-                        <span className="text-primary mr-2 text-xl">✓</span>
-                        <span className="text-gray-700">{feature}</span>
-                      </div>
-                    ))}
-                  </div>
-                </div> */}
+              
 
                
                 <div className="bg-blue-50 p-6 rounded-lg">

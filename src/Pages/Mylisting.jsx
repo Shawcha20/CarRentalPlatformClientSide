@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import { Link } from "react-router-dom";
+import { Link, Navigate, useNavigate } from "react-router-dom";
 
 import { showSuccess, showError, showConfirm } from "../utils/notifications";
 import { useAuth } from "../hooks/useAuth";
@@ -15,14 +15,16 @@ const MyListings = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
   const [editFormData, setEditFormData] = useState(null);
-
+  // fetching car data
   useEffect(() => {
     const fetchMylist = async () => {
       try {
+        console.log(user.email);
         const response = await axiosSecure.get(`/mylisting/?email=${user.email}`);
         if (!response.data || response.data.length === 0) {
           setError(true);
         } else {
+          console.log(response.data);
           setListings(response.data);
         }
       } catch (err) {
@@ -35,28 +37,7 @@ const MyListings = () => {
     fetchMylist();
   }, [user.email, axiosSecure]);
 
-  const handleEdit = (listing) => {
-   
-    setEditingId(listing._id);
-    setEditFormData({ ...listing });
-  };
-
-  const handleSaveEdit = async (id) => {
-    setLoading(true);
-    try {
- 
-      await new Promise((resolve) => setTimeout(resolve, 1000));
-      setListings(listings.map((l) => (l.id === id ? editFormData : l)));
-      setEditingId(null);
-      setEditFormData(null);
-      showSuccess("Listing updated successfully!", "Success");
-    } catch (error) {
-      console.error(error);
-      showError("Failed to update listing", "Error");
-    } finally {
-      setLoading(false);
-    }
-  };
+  
 
 const handleDelete = async (id) => {
   const result = await showConfirm(
@@ -66,30 +47,36 @@ const handleDelete = async (id) => {
 
   if (result.isConfirmed) {
     try {
+      setLoading(true);
       const response=await axiosSecure.delete(`/mylisting/${id}`); 
       console.log(response);
       setListings(listings.filter((l) => l._id !== id)); 
       showSuccess("Listing deleted successfully!", "Success");
+      setLoading(false)
     } catch (error) {
+      setLoading(false);
       console.error(error);
       showError("Failed to delete listing", "Error");
+      
     }
   }
 };
 
   const handleChangeStatus = async (id, currentStatus) => {
-    const newStatus = currentStatus === "available" ? "booked" : "available";
+    const newStatus = currentStatus === "Available" ? "booked" : "Available";
+    console.log(newStatus);
     const result = await showConfirm(`Mark this car as ${newStatus}?`, "Change Status");
-
     if (result.isConfirmed) {
-      setListings(listings.map((l) => (l.id === id ? { ...l, status: newStatus } : l)));
+      const updatedStatus={newStatus};
+      const response= await axiosSecure.patch(`/mylisting/${id}`,updatedStatus);
+      setListings(listings.map((l) => (l._id === id ? { ...l, status: newStatus } : l)));
       showSuccess(`Status updated to ${newStatus}`, "Success");
     }
   };
 
   if (loading) return <LoadingSpinner />;
 
-  if (error) return <ErrorPage />;
+  // if (error) return <Navigate to="/errorpage"></Navigate>;
 
   return (
     <div className="min-h-screen bg-white py-16 ">
@@ -104,20 +91,15 @@ const handleDelete = async (id) => {
           <p className="text-gray-600 text-lg">Manage your rental cars</p>
         </motion.div>
 
-        {listings.length === 0 ? (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            className="bg-white rounded-lg shadow-md p-12 text-center"
-          >
-            <p className="text-gray-600 text-lg mb-6">
-              You haven't added any cars yet.
-            </p>
-            <Link to="/add-car" className="btn btn-primary text-white">
-              Add Your First Car
-            </Link>
-          </motion.div>
-        ) : (
+        {listings.length === 0 ? 
+                  (<motion.div
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    className="bg-white rounded-lg shadow-md p-12 text-center"
+                  >
+                    <p className="text-gray-600 text-lg">No  cars added.</p>
+                  </motion.div>
+                ): (
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -159,7 +141,7 @@ const handleDelete = async (id) => {
                           <span className="text-gray-600">Status:</span>
                           <span
                             className={`badge ${
-                              listing.status === "available"
+                              listing.status === "Available"
                                 ? "badge-success"
                                 : "badge-warning"
                             }`}
@@ -172,7 +154,7 @@ const handleDelete = async (id) => {
                     {/* updating status  */}
                     <div className="card-actions flex flex-col gap-2 mt-4">
                       <button
-                        onClick={() => handleChangeStatus(listing.id, listing.status)}
+                        onClick={() => handleChangeStatus(listing._id, listing.status)}
                         className="btn btn-sm btn-outline w-full"
                       >
                         Mark as {listing.status === "Available" ? "Booked" : "Available"}
@@ -185,8 +167,7 @@ const handleDelete = async (id) => {
                 
                         <button
                           onClick={() => handleDelete(listing._id)}
-                          className="btn btn-sm btn-error text-white flex-1"
-                        >
+                          className="btn btn-sm btn-error text-white flex-1">
                           Delete
                         </button>
                       </div>
