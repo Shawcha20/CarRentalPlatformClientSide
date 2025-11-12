@@ -99,7 +99,7 @@ useEffect(() => {
                       { label: 'Fuel Type', value: car.fuel_type },
                       { label: 'Seats', value: car.seats },
                       { label: 'Doors', value: car.doors },
-                      {label: 'Location'}
+                      {label: 'Location', value:car.location}
                     ].map((spec, index) => (
                       <div key={index} className="bg-gray-50 p-4 rounded-lg">
                         <p className="text-sm text-gray-600">{spec.label}</p>
@@ -117,7 +117,7 @@ useEffect(() => {
                   <div className="space-y-2">
                     <p><span className="font-semibold text-gray-700">Provider:</span> {car.name}</p>
                     <p><span className="font-semibold text-gray-700">Email:</span> {car.email}</p>
-                    {/* <p><span className="font-semibold text-gray-700">Phone:</span> {car.providerPhone}</p> */}
+                    
                   </div>
                 </div>
               </motion.div>
