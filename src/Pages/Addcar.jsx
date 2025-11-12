@@ -139,8 +139,7 @@ const AddCar = () => {
           <h1 className="text-4xl font-bold text-gray-800 mb-2">Add a New Car</h1>
           <p className="text-gray-600 mb-8">List your vehicle on RentWheels</p>
 
-          <form onSubmit={handleSubmit} className="space-y-8">
-            {/* Provider info section */}
+          <form onSubmit={handleSubmit} className="space-y-8">           
             <div className="bg-blue-50 p-6 rounded-lg">
               <h2 className="text-xl font-bold text-gray-800 mb-4">Your Information</h2>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -170,8 +169,6 @@ const AddCar = () => {
                 </div>
               </div>
             </div>
-
-            {/* Car details section */}
             <div className="space-y-4">
               <h2 className="text-xl font-bold text-gray-800">Car Details</h2>
 
@@ -208,7 +205,6 @@ const AddCar = () => {
                   </select>
                 </div>
 
-                {/* New location field */}
                 <div>
                   <label className="block text-sm font-semibold text-gray-700 mb-2">
                     Location (City) *
