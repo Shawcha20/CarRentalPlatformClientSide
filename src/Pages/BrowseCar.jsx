@@ -3,6 +3,7 @@ import { motion } from 'framer-motion';
 import CarCard from '../Components/CarCard';
 import LoadingSpinner from '../Components/LoadingSpinner';
 import useAxiosSecure from '../hooks/useAxiosSecure';
+import { useLocation } from 'react-router-dom';
 
 const BrowseCars = () => {
   const [cars, setCars] = useState([]);
@@ -12,7 +13,7 @@ const BrowseCars = () => {
   const [sortBy, setSortBy] = useState('name');
   const [searchTerm, setSearchTerm] = useState(''); 
   const axiosSecure = useAxiosSecure();
-
+  const location=useLocation();
   
   useEffect(() => {
     const fetchCarData = async () => {
@@ -29,7 +30,12 @@ const BrowseCars = () => {
     fetchCarData();
   }, [axiosSecure]);
 
-  
+useEffect(() => {
+  const params = new URLSearchParams(location.search);
+  const search = params.get('search') || '';
+  setSearchTerm(search);
+}, [location]);
+
   useEffect(() => {
     let filtered = cars;
 
