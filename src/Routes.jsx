@@ -11,6 +11,8 @@ import BrowseCar from "./Pages/BrowseCar";
 import CarDetails from "./Pages/CarDetails";
 import EditForm from "./Pages/EditForm";
 import ErrorPage from "./Pages/ErrorPage";
+import Dashboard from "./Pages/Dashboard";
+import Profile from "./Pages/Profile";
 
 export const router = createBrowserRouter([
   {
@@ -22,10 +24,18 @@ export const router = createBrowserRouter([
         index: true,
         Component: Home,
       },
-    {
-      path:"add-car",
-      element:<ProtectedRoute><Addcar></Addcar></ProtectedRoute>
-    },
+      {
+        path:"dashboard",
+        element:<ProtectedRoute><Dashboard></Dashboard></ProtectedRoute>
+      },
+      {
+        path:"profile",
+        element:<ProtectedRoute><Profile></Profile></ProtectedRoute>
+      },
+      {
+        path:"add-car",
+        element:<ProtectedRoute><Addcar></Addcar></ProtectedRoute>
+      },
     {
       path:"my-listings",
       element:<ProtectedRoute><Mylisting/></ProtectedRoute>
@@ -40,7 +50,7 @@ export const router = createBrowserRouter([
     },
     {
       path:"car-details/:id",
-      element:<ProtectedRoute><CarDetails></CarDetails></ProtectedRoute>
+      element:<CarDetails></CarDetails>
     },
     {
       path:"/car-edit/:id",

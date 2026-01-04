@@ -1,5 +1,7 @@
 import React from 'react'
 import { Link, useLocation } from 'react-router-dom'
+import { FaFacebook, FaInstagram, FaLinkedin } from 'react-icons/fa'
+import { SiX } from 'react-icons/si'
 
 export default function Footer() {
   const location = useLocation();
@@ -65,17 +67,17 @@ export default function Footer() {
           <div>
             <h3 className="text-lg font-bold mb-4">Follow Us</h3>
             <div className="flex gap-4">
-              <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" className="text-2xl hover:text-primary transition">
-                📱
+              <a href="https://www.facebook.com/mahamudul.islam.shawcha/" target="_blank" rel="noopener noreferrer" className="text-2xl hover:text-primary transition duration-300 hover:scale-125 inline-block">
+                <FaFacebook />
               </a>
-              <a href="https://twitter.com" target="_blank" rel="noopener noreferrer" className="text-2xl hover:text-primary transition">
-                🐦
+              <a href="https://x.com" target="_blank" rel="noopener noreferrer" className="text-2xl hover:text-primary transition duration-300 hover:scale-125 inline-block">
+                <SiX />
               </a>
-              <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" className="text-2xl hover:text-primary transition">
-                📷
+              <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" className="text-2xl hover:text-primary transition duration-300 hover:scale-125 inline-block">
+                <FaInstagram />
               </a>
-              <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" className="text-2xl hover:text-primary transition">
-                💼
+              <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" className="text-2xl hover:text-primary transition duration-300 hover:scale-125 inline-block">
+                <FaLinkedin />
               </a>
             </div>
           </div>

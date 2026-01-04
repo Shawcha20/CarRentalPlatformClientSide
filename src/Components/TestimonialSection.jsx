@@ -45,7 +45,7 @@ export default function TestimonialSection() {
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6 }}
-              className="text-4xl font-bold text-gray-800 mb-4"
+              className="text-4xl font-bold [data-theme=light_&]?text-secondary:text-gray-600 mb-4"
             >
               Customer <span className="text-primary">Testimonials</span>
             </motion.h2>
@@ -53,7 +53,7 @@ export default function TestimonialSection() {
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.2 }}
-              className="text-gray-600"
+              className="[data-theme=light_&]?text-secondary:text-gray-600"
             >
               What our satisfied customers say about us
             </motion.p>

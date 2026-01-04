@@ -35,7 +35,7 @@ export default function FeaturedCarSection() {
   if (loading) return <LoadingSpinner></LoadingSpinner>;
 
   return (
-    <section className="bg-gradient-to-br from-gray-50 via-white to-gray-100 py-20">
+    <section className="bg-gradient-to-br from-gray-50 via-white rounded-2xl to-gray-100 py-20">
       <div className="container mx-auto px-6">
         <div className="text-center mb-14">
           <motion.h2

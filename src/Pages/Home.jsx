@@ -5,7 +5,11 @@ import FeaturedCarSection from '../Components/FeaturedCarSection';
 import WhyrentUs from '../Components/WhyrentUs';
 import TopRatedSection from '../Components/TopRatedSection';
 import TestimonialSection from '../Components/TestimonialSection';
+import ServicesSection from '../Components/ServicesSection';
+import BlogSection from '../Components/BlogSection';
 import RentACar from '../Components/RentACar';
+import FAQSection from '../Components/FAQSection';
+import StatisticsSection from '../Components/StatisticsSection';
 
 export default function Home() {
   const [searchTerm, setSearchTerm] = useState('');
@@ -54,12 +58,24 @@ export default function Home() {
         <WhyrentUs />
       </section>
       <section className='mt-10'>
+        <ServicesSection />
+      </section>
+      <section className='mt-10'>
+        <StatisticsSection />
+      </section>
+      <section className='mt-10'>
         <TopRatedSection />
       </section>
       <section className='mt-10'>
         <TestimonialSection />
       </section>
-      <section className='py-20 bg-primary text-white mt-10'>
+      <section className='mt-10'>
+        <BlogSection />
+      </section>
+      <section className='mt-10'>
+        <FAQSection></FAQSection>
+      </section>
+      <section className='py-20 bg-primary text-white mt-10 rounded-2xl my-5'>
         <RentACar />
       </section>
     </div>
